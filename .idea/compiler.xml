@@ -16,11 +16,13 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="emailsendermess" target="11" />
       <module name="shared-kernel (1)" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="emailsendermess" options="-parameters" />
       <module name="emailsendermessage" options="-parameters" />
       <module name="order-managment" options="-parameters" />
       <module name="product-catalog" options="-parameters" />

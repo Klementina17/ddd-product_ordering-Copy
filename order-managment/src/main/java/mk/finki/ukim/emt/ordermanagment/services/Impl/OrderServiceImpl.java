@@ -12,6 +12,7 @@ import mk.finki.ukim.emt.ordermanagment.services.forms.OrderForm;
 import mk.finki.ukim.emt.ordermanagment.services.forms.OrderItemForm;
 import mk.finki.ukim.emt.sharedkernel.domain.events.orders.OrderItemCreated;
 import mk.finki.ukim.emt.sharedkernel.infra.DomainEventPublisher;
+import mk.ukim.finki.emt.emailsendermessage.EmailsendermessageApplication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final DomainEventPublisher domainEventPublisher;
     private final Validator validator;
+    private final EmailsendermessageApplication emailsendermessageApplication;
 
 
     @Override
@@ -41,9 +43,10 @@ public class OrderServiceImpl implements OrderService {
         }
         var newOrder = orderRepository.saveAndFlush(toDomainObject(orderForm));
         newOrder.getOrderItemsList().forEach(item->domainEventPublisher.publish(new OrderItemCreated(item.getProductId().getId(),item.getQuantity())));
+        emailsendermessageApplication.sendMail();
         return newOrder.getId();
-
     }
+
 
     @Override
     public List<Order> findAll() {
